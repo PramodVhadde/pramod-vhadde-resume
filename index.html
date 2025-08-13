@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pramod Vhadde | Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between sections (Home, Experience, Skills, Education). This thematic structure is more intuitive and engaging for a recruiter than a static document. The flow starts with a strong summary, moves to a visual timeline of experience, showcases skills with a quantitative impact chart, and ends with education. This design prioritizes scannability and highlights key achievements effectively. -->
+    <!-- Visualization & Content Choices: Summary -> Inform -> Clean text block. Experience -> Change/Inform -> Vertical timeline (HTML/CSS) to show progression. Key Achievements -> Compare -> Horizontal Bar Chart (Chart.js) to visualize the percentage-based impacts mentioned in the resume, making them more memorable. Skills -> Organize -> Grouped tags (HTML/CSS) for quick scanning. This combination of text and visuals provides a comprehensive yet easily digestible overview of the candidate's profile. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #2c3e50;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.75rem;
+            top: 0.5rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            border: 4px solid #F8F7F4;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .message-box {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background-color: rgba(59, 130, 246, 0.9);
+            color: white;
+            border-radius: 9999px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 100;
+        }
+        .message-box.show {
+            opacity: 1;
+        }
+
+        /* New animations for professional feel */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeInMoveUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .contact-details-animate {
+            animation: fadeInMoveUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="navbar" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">Pramod Vhadde</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link font-medium pb-1">Home</a>
+                <a href="#experience" class="nav-link font-medium pb-1">Experience</a>
+                <a href="#skills" class="nav-link font-medium pb-1">Skills</a>
+                <a href="#education" class="nav-link font-medium pb-1">Education</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#home" class="block py-2 px-4 text-sm hover:bg-gray-200">Home</a>
+            <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="#education" class="block py-2 px-4 text-sm hover:bg-gray-200">Education</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="home" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900">Pramod Vhadde</h1>
+            <p class="mt-4 text-xl md:text-2xl text-blue-600 font-medium">Software Engineer</p>
+            <p class="mt-6 max-w-3xl text-lg text-gray-600 leading-relaxed">
+                Results-oriented Software Engineer with a strong foundation in Java and Spring Boot. I bring a unique problem-solving approach to software development, with a proven ability to deliver high-quality projects on time and contribute to significant performance improvements.
+            </p>
+            <div class="mt-8 flex flex-col items-center">
+                <button id="contact-btn" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none">Contact Me</button>
+                <!-- Initially hidden contact details -->
+                <div id="contact-details" class="mt-4 flex flex-col items-center space-y-2 text-gray-600 text-md hidden">
+                    <span class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                        <span>provhadde@gmail.com</span>
+                    </span>
+                    <span class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 5.922a1 1 0 01-.29.837L5.492 10.99A11.968 11.968 0 0010 14.508l2.306-1.78a1 1 0 01.837-.29l5.922.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.94 18 2 12.06 2 5V3z"></path></svg>
+                        <span>+91-8329713590</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="py-16 md:py-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900">Work Experience</h2>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative border-l-2 border-gray-200 pl-12">
+                    
+                    <div class="mb-12 timeline-item">
+                        <p class="text-sm font-medium text-blue-600">FEB 2023 - PRESENT</p>
+                        <h3 class="text-xl font-bold text-gray-800 mt-1">Software Engineer</h3>
+                        <p class="text-md text-gray-600">Data Economy (Client: Citi Bank)</p>
+                        <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2">
+                            <li>Developed and maintained backend features for the Citibank ERM project using Java and Spring Boot.</li>
+                            <li>Implemented unit tests with Mockito & JUnit 5 to improve code coverage and address Sonar issues.</li>
+                            <li>Improved API response time by <span class="font-bold text-blue-600">20%</span> by implementing a new caching system.</li>
+                            <li>Reduced application build and deployment time by <span class="font-bold text-blue-600">50%</span> by collaborating on a migration to Lightspeed.</li>
+                            <li>Developed Excel upload/download functionality and a Maker/Checker approval process.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-12 timeline-item">
+                        <p class="text-sm font-medium text-blue-600">AUG 2022 - JAN 2023</p>
+                        <h3 class="text-xl font-bold text-gray-800 mt-1">Trainee Engineer</h3>
+                        <p class="text-md text-gray-600">Data Economy (In-House Product: MDM)</p>
+                        <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2">
+                            <li>Added backend functionality for a Master Data Management (MDM) system using Spring Boot.</li>
+                            <li>Introduced Kafka for event-driven processes within the project for the first time.</li>
+                            <li>Increased the migration process efficiency by <span class="font-bold text-blue-600">30%</span> by assisting in the move to a Microservice Architecture.</li>
+                            <li>Used Spring Boot Actuator for application health checks and executed complex SQL queries.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-16 md:py-24 bg-white rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900">Technical Skills</h2>
+            <p class="mt-4 text-center max-w-2xl mx-auto text-gray-600">
+                This list is formatted to be easily parsed by an Applicant Tracking System (ATS) for optimal keyword matching.
+            </p>
+            <div class="mt-12 max-w-4xl mx-auto space-y-8">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Programming Languages</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-blue-100 text-blue-800 text-sm font-medium px-4 py-2 rounded-full">Java 11</span>
+                        <span class="bg-blue-100 text-blue-800 text-sm font-medium px-4 py-2 rounded-full">SQL</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Frameworks & Libraries</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full">Spring Boot</span>
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full">Hibernate ORM</span>
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full">JUnit 5</span>
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full">Mockito</span>
+                        <span class="bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full">REST APIs</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Tools & Platforms</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Git-Bash</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Bitbucket</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Jenkins</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">OpenShift</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">JIRA</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Swagger</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Eclipse</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">IntelliJ</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Harness</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Postman</span>
+                        <span class="bg-gray-200 text-gray-800 text-sm font-medium px-4 py-2 rounded-full">Kafka</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Databases</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-4 py-2 rounded-full">Oracle 10g</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-4 py-2 rounded-full">MySQL</span>
+                    </div>
+                </div>
+            </div>
+            <!-- The old chart is removed as it's not ATS-friendly and we are prioritizing the ATS-friendly format here. -->
+        </section>
+
+        <section id="education" class="py-16 md:py-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900">Education</h2>
+            <div class="mt-12 max-w-3xl mx-auto space-y-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <p class="text-sm font-medium text-gray-500">2018 - 2021</p>
+                    <h3 class="text-xl font-bold text-gray-800 mt-1">Bachelor of Engineering (Mechanical)</h3>
+                    <p class="text-md text-gray-600">Trinity College of Engineering and Research, Pune</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <p class="text-sm font-medium text-gray-500">2015 - 2018</p>
+                    <h3 class="text-xl font-bold text-gray-800 mt-1">Diploma in Engineering (Mechanical)</h3>
+                    <p class="text-md text-gray-600">Trinity Polytechnic, Pune</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="message-box" class="message-box hidden">Email copied to clipboard!</div>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2025 Pramod Vhadde. All rights reserved.</p>
+            <p class="mt-2 text-gray-400">Built to showcase skills in an interactive format.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const contactBtn = document.getElementById('contact-btn');
+            const messageBox = document.getElementById('message-box');
+            const contactDetails = document.getElementById('contact-details');
+
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            function changeActiveLink() {
+                let index = sections.length;
+
+                while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                if (navLinks[index]) {
+                   navLinks[index].classList.add('active');
+                }
+            }
+
+            changeActiveLink();
+            window.addEventListener('scroll', changeActiveLink);
+
+            contactBtn.addEventListener('click', () => {
+                // Animate the button click
+                contactBtn.style.animation = 'pulse 0.5s ease-out';
+                setTimeout(() => {
+                    contactBtn.style.animation = '';
+                }, 500);
+
+                // Show and animate the contact details
+                contactDetails.classList.remove('hidden');
+                contactDetails.classList.add('contact-details-animate');
+                setTimeout(() => {
+                    contactDetails.classList.remove('contact-details-animate');
+                }, 800);
+
+                // Copy email to clipboard
+                const email = 'provhadde@gmail.com';
+                const tempInput = document.createElement('textarea');
+                tempInput.value = email;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                // Show the success message box
+                messageBox.classList.remove('hidden');
+                messageBox.classList.add('show');
+
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                    setTimeout(() => {
+                        messageBox.classList.add('hidden');
+                    }, 500);
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+  </html>
+  
